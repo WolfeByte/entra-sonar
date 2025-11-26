@@ -1,3 +1,6 @@
+![Entra Sonar](https://github.com/user-attachments/assets/69ea36ef-940f-46c1-9177-4e6108695ce6)
+
+
 # Entra Sonar
 
 Search for Entra tenants using a verified domain or tenant ID and get information about all verified domains in the tenant including federated IdP information and Microsoft cloud service usage. Works across both public, national, and sovereign Microsoft clouds.
