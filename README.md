@@ -1,6 +1,6 @@
 # Entra Sonar
 
-Investigation tool for Microsoft Entra ID domains and federation settings across multiple cloud environments.
+Search for Entra tenants using a verified domain or tenant ID and get information about all verified domains in the tenant including federated IdP information and Microsoft cloud service usage. Works across both public, national, and sovereign Microsoft clouds.
 
 **Live Application:** [https://entrasonar.com](https://entrasonar.com)
 
