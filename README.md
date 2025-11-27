@@ -24,11 +24,28 @@ Using various search techniques, Entra Sonar will retrieve information about cer
 
 Entra Sonar automatically identifies which Microsoft cloud environment hosts a tenant by analysing OpenID configuration endpoints. Each cloud environment uses distinct authentication endpoints:
 
-| Cloud Type | Authentication Endpoint | Data Location |
-|------------|------------------------|---------------|
-| Public Cloud | `login.microsoftonline.com` | Worldwide, or geo-located in certain regions for data residency |
-| US Government (GCC/GCC High/DoD) | `login.microsoftonline.us` | United States only, secret squirel stuff |
-| China 21Vianet | `login.partner.microsoftonline.cn` | China only, operated by 21Vianet |
+<table>
+  <tr>
+    <th>Cloud Type</th>
+    <th>Authentication Endpoint</th>
+    <th>Data Location</th>
+  </tr>
+  <tr>
+    <td>Public Cloud</td>
+    <td><code>login.microsoftonline.com</code></td>
+    <td style="white-space: nowrap;">Replicated Worldwide, or geo-located in certain regions</td>
+  </tr>
+  <tr>
+    <td>US Government (GCC, GCC High, DoD)</td>
+    <td><code>login.microsoftonline.us</code></td>
+    <td style="white-space: nowrap;">United States only, secret squirrel stuff </td>
+  </tr>
+  <tr>
+    <td>China 21Vianet</td>
+    <td><code>login.partner.microsoftonline.cn</code></td>
+    <td style="white-space: nowrap;">China only</td>
+  </tr>
+</table>
 
 ### Federation Discovery
 
