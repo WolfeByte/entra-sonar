@@ -1,27 +1,31 @@
 
 <img width="1056" height="112" alt="image" src="https://github.com/user-attachments/assets/daa080d4-fff8-4cf9-a8ab-a4e7854f5234" />
 
-Search for Entra tenants using a domain or tenant ID and get information about all verified domains in the tenant including federated IdP information and Microsoft cloud service usage. Works across both public, national, and sovereign Microsoft clouds.
+Have you ever needed to track down a Microsoft Entra ID tenant when all you have is a domain name? Maybe you already have the tenant ID and want to work backwards to see which domains sit behind it. You might also be curious about which identity provider a domain uses, which Microsoft services it ties into, or where the tenant is located with any custom branding included. You may even need all of this to function across public, national, and sovereign Microsoft cloud environments.
+
+That is exactly what Entra Sonar handles. It searches for Entra tenants using a domain or tenant ID and uncovers details about verified domains, federated identity providers, and Microsoft cloud service usage across every Microsoft cloud environment.
 
 **Site:** [https://entrasonar.com](https://entrasonar.com)
 
 ## Overview
 
-Using various search techniques, Entra Sonar will retrieve information about certain aspects of the tenant:
+Entra Sonar uses various search techniques to pull together information about Microsoft Entra ID tenants:
 
 - **Multi-Cloud Support**: Search and analyse tenants across Public Cloud, US Government, and China 21Vianet environments
-- **Tenant Details**: Provides information about the tenants location, cloud type, IdP
-- **Federation Settings**: Identifies which identity provider (IdP) manages authentication for each verified domain (AD FS, Okta, Ping, etc.)
-- **Custom Branding**: Displays any images and other customisations made to the sign-in page of the tenant
-- **Verified Domains**: Displays the domains that are verified in the tenant
-- **Domain Analysis**:  Performs a scan against each verified domain and attempts to match these to any Microsoft services.
-- **Azure AD B2C Detection**: Attempts to identify B2C tenants with a certain degree of accuracy (its flakey).
+- **Tenant Details**: Get information about the tenants location, cloud type, and identity provider configuration
+- **Federation Settings**: See which identity provider manages authentication for each verified domain (Entra, AD FS, Okta, Ping, and others)
+- **Custom Branding**: View any images and customisations applied to the tenant's sign-in page
+- **Verified Domains**: Display all domains verified in the tenant
+- **Domain Analysis**: Scan each verified domain and attempt to match them to Microsoft services
+- **Azure AD B2C Detection**: Attempt to identify B2C tenants (though this can be a bit hit and miss)
 
 ## How It Works
 
 ### Cloud Environment Detection
 
-Entra Sonar automatically identifies which Microsoft cloud environment hosts a tenant by analysing OpenID configuration endpoints. Each cloud environment uses distinct authentication endpoints:
+Entra Sonar automatically identifies which Microsoft cloud environment hosts a tenant by analysing OpenID configuration endpoints.\
+
+Each Microsoft cloud environment uses distinct authentication endpoints:
 
 <table>
   <tr>
@@ -30,7 +34,7 @@ Entra Sonar automatically identifies which Microsoft cloud environment hosts a t
     <th>Data Location</th>
   </tr>
   <tr>
-    <td>Public Cloud</td>
+    <td>Public Cloud (M365 Commercial)</td>
     <td><code>login.microsoftonline.com</code></td>
     <td style="white-space: nowrap;">Replicated Worldwide, or geo-located in certain regions</td>
   </tr>
@@ -46,57 +50,68 @@ Entra Sonar automatically identifies which Microsoft cloud environment hosts a t
   </tr>
 </table>
 
-Government cloud subtypes (GCC, GCC High, DoD) are distinguished by analysing tenant_region_scope and tenant_region_sub_scope metadata fields in the OpenID configuration response.
+Government cloud subtypes (GCC, GCC High, DoD) are distinguished by analysing `tenant_region_scope` and `tenant_region_sub_scope` metadata fields in the OpenID configuration response.
+
+<img width="874" height="288" alt="image" src="https://github.com/user-attachments/assets/7f7d4d19-42e1-4378-9dab-8ed2084e3a7c" />
 
 ### IdP Discovery
-
-When you query a domain, Entra Sonar uses Microsoft's `GetUserRealm` endpoint at https://login.microsoftonline.com/GetUserRealm.srf?login=foo@contoso.com&extended=1 to determine the authentication configuration of the domain, which is returned in the `NameSpaceType` object, and will contain a value of either `Managed` or `Federated`.
+When you query a domain, Entra Sonar uses Microsoft's GetUserRealm endpoint to determine the authentication configuration. The endpoint returns a `NameSpaceType` value of either Managed or Federated:
 
 1. **Managed Domain**: Authentication is handled directly by Entra (Password Hash Sync, Pass-through Authentication)
 2. **Federated Domain**: Authentication is delegated to an external identity provider using WS-Fed, SAML, or OIDC
 
-For federated domains, Entra Sonar retrieves the federation metadata endpoint and analyses the configuration to identify the IdP based on specific URL patterns unique to each IdP.
+For federated domains, Entra Sonar will also retrieve the federation metadata endpoint and identify the IdP based on URL patterns unique to each provider. 
 
-X.509 certificate details (validity dates, issuer, subject, key size) are parsed and displayed for federated configurations.
+X.509 certificate details (validity dates, issuer, subject, key size) are parsed and displayed for federated domains.
+
+<img width="874" height="567" alt="image" src="https://github.com/user-attachments/assets/a98e9d35-fbe7-411c-8639-07410e5bdea9" />
 
 ### Verified Domains
-Up until recent change, it was possible to query all verified domains that were present in a tenant via the Exchange Online federation endpoint used by AutoDiscover. This is no longer possible, so as we a workaround I am using Micah Van Deusen API at https://micahvandeusen.com/tools/tenant-domains/ to retreive these domains, but there are some limitations, such as subdomains not being returned, or not all domains being listed. 
+Until recently, it was possible to query and retrieve all verified domains in a tenant via the Exchange Online federation endpoint used by AutoDiscover. Since that's no longer available, I'm using Micah Van Deusen's API at https://micahvandeusen.com/tools/tenant-domains/ as a workaround. There are some limitations though, subdomains may not be returned, and the domain list might not always be complete.
 
-Credit to **Micah Van Deusen** for creating this API https://github.com/micahvandeusen
+Credit to [Micah Van Deusen](https://github.com/micahvandeusen) for creating this API.
 
-**Note:** Domain enumeration when searching using a tenant ID is limited to tenants in the public cloud only. For US Government and China clouds, it is not possible to search by tenant ID and find what domains are verified in the tenant, you will need to know a domain name to find that out.
+**Note:** When searching by tenant ID, domain enumeration only works for tenants in the public cloud. For US Government and China clouds, you'll need to know a domain name to discover verified domains.
 
 ### Microsoft Service Usage Discovery
 
-The **Detailed Domain Scan** feature performs DNS queries to identify Microsoft services attached to verified domains:
+The **Detailed Domain Scan** feature performs DNS queries to identify Microsoft services attached to each verified domain:
 
-Exchange Online\
-SharePoint Online\
-Teams\
-Intune\
-Azure
+- **Exchange Online**
+- **SharePoint Online**
+- **Teams**
+- **Intune**
+- **Azure**
 
 For email-enabled domains, the scan checks:
 
-MX Records: Mail exchange server configuration\
-SPF (Sender Policy Framework): Email sender authentication\
-DKIM (DomainKeys Identified Mail): Email signature verification\
-DMARC (Domain-based Message Authentication): Email policy enforcement
+- **MX Records:** Mail exchange server configuration
+- **SPF (Sender Policy Framework):** Email sender authentication
+- **DKIM (DomainKeys Identified Mail):** Email signature verification
+- **DMARC (Domain-based Message Authentication):** Email policy enforcement
+
+<img width="873" height="236" alt="image" src="https://github.com/user-attachments/assets/bb2613ee-b0b2-44c6-a5f9-4ee4268904b2" />
+
+### Custom Branding
+
+If the tenant has custom branding in place, it will show up in the Custom Branding card, including any images and text.
+
+<img width="874" height="1209" alt="image" src="https://github.com/user-attachments/assets/67d4c2d5-3cea-42a1-ab2b-239ca1c15ab1" />
 
 ### Report a Bug
 
-Found an issue with Entra Sonar? Please [open a bug report](https://github.com/WolfeByte/entra-sonar/issues/new?template=bug_report.md) using the bug report template. Include:
+Found an issue with Entra Sonar? Please [open a bug report](https://github.com/WolfeByte/entra-sonar/issues/new?template=bug_report.md) using the bug report template and include:
 
 - Clear description of the issue
 - Steps to reproduce
 - Expected vs. actual behavior
-- Domain or tenant ID (if safe to share publicly)
+- Domain or tenant ID (if you're comfortable sharing it)
 
 ### Request a Feature
 
-Have an idea for improving Entra Sonar? Please [open a feature request](https://github.com/WolfeByte/entra-sonar/issues/new?template=feature_request.md) using the feature request template. Describe:
+Have an idea for improving Entra Sonar? Please [open a feature request](https://github.com/WolfeByte/entra-sonar/issues/new?template=feature_request.md) using the feature request template and describe:
 
-- The feature or enhancement
+- The feature or enhancement you'd like to see
 - Your use case
 - Expected behavior
 - Any additional context or examples
