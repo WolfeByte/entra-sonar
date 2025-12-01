@@ -1,29 +1,29 @@
 
 <img width="1056" height="112" alt="image" src="https://github.com/user-attachments/assets/daa080d4-fff8-4cf9-a8ab-a4e7854f5234" />
 
-Have you ever needed to track down a Microsoft Entra ID tenant when all you have is a domain name? Maybe you already have the tenant ID and want to work backwards to see which domains sit behind it. You might also be curious about which identity provider a domain uses, which Microsoft services it ties into, or where the tenant is located with any custom branding included. You may even need all of this to function across public, national, and sovereign Microsoft cloud environments.
+Have you ever tried to locate a Microsoft Entra ID tenant ID when all you have is a domain name? Maybe you already know the tenant ID and want to look the other way to see which domains are verified in that tenant. You may also want to identify the federated IdP a tenant uses, understand how each domain uses the various Microsoft services, or check the tenant’s location and any custom branding. You need all of this to work across public, national, and sovereign Microsoft cloud environments.
 
-That is exactly what Entra Sonar handles. It searches for Entra tenants using a domain or tenant ID and uncovers details about verified domains, federated identity providers, and Microsoft cloud service usage across every Microsoft cloud environment.
+That is exactly what Entra Sonar handles. It searches for Entra tenants using either a domain or a tenant ID, and reveals verified domains, IdP's, and Microsoft cloud service usage across every Microsoft cloud environment.
 
 **Site:** [https://entrasonar.com](https://entrasonar.com)
 
 ## Overview
 
-Entra Sonar uses various search techniques to pull together information about Microsoft Entra ID tenants:
+Entra Sonar uses various techniques to pull together information about Microsoft Entra ID tenants:
 
 - **Multi-Cloud Support**: Search and analyse tenants across Public Cloud, US Government, and China 21Vianet environments
-- **Tenant Details**: Get information about the tenants location, cloud type, and identity provider configuration
-- **Federation Settings**: See which identity provider manages authentication for each verified domain (Entra, AD FS, Okta, Ping, and others)
+- **Tenant Details**: Get information about the tenants location, cloud type, and IdP configuration
+- **Federation Settings**: See detailed IdP information for each verified domain (Entra, AD FS, Okta, Ping, and others)
 - **Custom Branding**: View any images and customisations applied to the tenant's sign-in page
 - **Verified Domains**: Display all domains verified in the tenant
 - **Domain Analysis**: Scan each verified domain and attempt to match them to Microsoft services
-- **Azure AD B2C Detection**: Attempt to identify B2C tenants (though this can be a bit hit and miss)
+- **Azure AD B2C Detection**: Identify B2C tenants (though this can be a bit hit and miss)
 
 ## How It Works
 
 ### Cloud Environment Detection
 
-Entra Sonar automatically identifies which Microsoft cloud environment hosts a tenant by analysing OpenID configuration endpoints.\
+Entra Sonar automatically identifies which Microsoft cloud environment hosts a tenant by analysing OpenID configuration endpoints.
 
 Each Microsoft cloud environment uses distinct authentication endpoints:
 
@@ -55,7 +55,9 @@ Government cloud subtypes (GCC, GCC High, DoD) are distinguished by analysing `t
 <img width="874" height="288" alt="image" src="https://github.com/user-attachments/assets/7f7d4d19-42e1-4378-9dab-8ed2084e3a7c" />
 
 ### IdP Discovery
-When you query a domain, Entra Sonar uses Microsoft's GetUserRealm endpoint to determine the authentication configuration. The endpoint returns a `NameSpaceType` value of either Managed or Federated:
+When you query a domain, Entra Sonar uses Microsoft's GetUserRealm endpoint to determine the authentication configuration. 
+
+This endpoint returns a `NameSpaceType` value of either Managed or Federated:
 
 1. **Managed Domain**: Authentication is handled directly by Entra (Password Hash Sync, Pass-through Authentication)
 2. **Federated Domain**: Authentication is delegated to an external identity provider using WS-Fed, SAML, or OIDC
@@ -71,7 +73,7 @@ Until recently, it was possible to query and retrieve all verified domains in a 
 
 Credit to [Micah Van Deusen](https://github.com/micahvandeusen) for creating this API.
 
-**Note:** When searching by tenant ID, domain enumeration only works for tenants in the public cloud. For US Government and China clouds, you'll need to know a domain name to discover verified domains.
+**Note:** When searching by tenant ID, domain enumeration only works for tenants in the public cloud. For US Government and China clouds, you'll need to know a domain name to discover any other verified domains in the tenant.
 
 ### Microsoft Service Usage Discovery
 
