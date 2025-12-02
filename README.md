@@ -93,27 +93,9 @@ If the tenant has custom branding in place, it will show up in the Custom Brandi
 
 <img width="894" height="1210" alt="image" src="https://github.com/user-attachments/assets/d425bfc2-71f1-4852-88f6-f974f42eea04" />
 
-### Report a Bug
+### Discussions
 
-Found an issue with Entra Sonar? Please [open a bug report](https://github.com/WolfeByte/entra-sonar/issues/new?template=bug_report.md) using the bug report template and include:
-
-- Clear description of the issue
-- Steps to reproduce
-- Expected vs. actual behavior
-- Domain or tenant ID (if you're comfortable sharing it)
-
-### Request a Feature
-
-Have an idea for improving Entra Sonar? Please [open a feature request](https://github.com/WolfeByte/entra-sonar/issues/new?template=feature_request.md) using the feature request template and describe:
-
-- The feature or enhancement you'd like to see
-- Your use case
-- Expected behavior
-- Any additional context or examples
-
-### General Questions
-
-For general questions or discussions about Entra Sonar, please use [GitHub Discussions](https://github.com/WolfeByte/entra-sonar/discussions).
+For feedback, ideas, or questions about Entra Sonar, please use [GitHub Discussions](https://github.com/WolfeByte/entra-sonar/discussions).
 
 **Maintained by:** [Benjamin Wolfe](https://github.com/WolfeByte)
 
