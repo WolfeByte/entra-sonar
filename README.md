@@ -52,7 +52,7 @@ Each Microsoft cloud environment uses distinct authentication endpoints:
 
 Government cloud subtypes (GCC, GCC High, DoD) are distinguished by analysing `tenant_region_scope` and `tenant_region_sub_scope` metadata fields in the OpenID configuration response.
 
-<img width="874" height="288" alt="image" src="https://github.com/user-attachments/assets/7f7d4d19-42e1-4378-9dab-8ed2084e3a7c" />
+<img width="889" height="333" alt="image" src="https://github.com/user-attachments/assets/bb16780c-d976-40db-b43f-f2a79655a82d" />
 
 ### IdP Discovery
 When you query a domain, Entra Sonar uses Microsoft's GetUserRealm endpoint to determine the authentication configuration. 
@@ -66,14 +66,7 @@ For federated domains, Entra Sonar will also retrieve the federation metadata en
 
 X.509 certificate details (validity dates, issuer, subject, key size) are parsed and displayed for federated domains.
 
-<img width="874" height="567" alt="image" src="https://github.com/user-attachments/assets/a98e9d35-fbe7-411c-8639-07410e5bdea9" />
-
-### Verified Domains
-Until recently, it was possible to query and retrieve all verified domains in a tenant via the Exchange Online federation endpoint used by AutoDiscover. Since that's no longer available, I'm using Micah Van Deusen's API at https://micahvandeusen.com/tools/tenant-domains/ as a workaround. There are some limitations though, subdomains may not be returned, and the domain list might not always be complete.
-
-Credit to [Micah Van Deusen](https://github.com/micahvandeusen) for creating this API.
-
-**Note:** When searching by tenant ID, domain enumeration only works for tenants in the public cloud. For US Government and China clouds, you'll need to know a domain name to discover any other verified domains in the tenant.
+<img width="888" height="568" alt="image" src="https://github.com/user-attachments/assets/2859902f-1999-4f09-8ce0-f76b0c488302" />
 
 ### Microsoft Service Usage Discovery
 
@@ -92,13 +85,13 @@ For email-enabled domains, the scan checks:
 - **DKIM (DomainKeys Identified Mail):** Email signature verification
 - **DMARC (Domain-based Message Authentication):** Email policy enforcement
 
-<img width="873" height="236" alt="image" src="https://github.com/user-attachments/assets/bb2613ee-b0b2-44c6-a5f9-4ee4268904b2" />
+<img width="894" height="505" alt="image" src="https://github.com/user-attachments/assets/9083c9f9-6097-42bc-a384-6b619426bf57" />
 
 ### Custom Branding
 
 If the tenant has custom branding in place, it will show up in the Custom Branding card, including any images and text.
 
-<img width="874" height="1209" alt="image" src="https://github.com/user-attachments/assets/67d4c2d5-3cea-42a1-ab2b-239ca1c15ab1" />
+<img width="894" height="1210" alt="image" src="https://github.com/user-attachments/assets/d425bfc2-71f1-4852-88f6-f974f42eea04" />
 
 ### Report a Bug
 
